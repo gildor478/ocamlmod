@@ -20,6 +20,23 @@
 ################################################################################
 
 # OASIS_START
-# DO NOT EDIT (digest: 005b55b7005e87fb6b8c67fc7c37f498)
+# DO NOT EDIT (digest: bb48681226a339e9d4a10a496dfc669e)
+# Ignore VCS directories, you can use the same kind of rule outside 
+# OASIS_START/STOP if you want to exclude directories that contains 
+# useless stuff for the build process
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
 # Executable ocamlmod
+"src/ocamlmod.byte": pkg_fileutils
+"src/ocamlmod.byte": pkg_pcre
+<src/*.ml{,i}>: pkg_fileutils
+<src/*.ml{,i}>: pkg_pcre
 # OASIS_STOP
