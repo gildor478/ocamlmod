@@ -117,7 +117,10 @@ let dump_ml chn_out fn =
                 line
                 [with_odn; type_conv_path]
             in
-              Printf.fprintf chn_out "  %s\n" line;
+              if line = "" then
+                Printf.fprintf chn_out "\n" 
+              else
+                Printf.fprintf chn_out "  %s\n" line;
               parse_body (input_line ())
           end
     in
