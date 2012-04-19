@@ -115,3 +115,4 @@
 ^setup.log$
 ^_build$
 ^ocamlmod.byte$
+^.*\.tar\.gz$
