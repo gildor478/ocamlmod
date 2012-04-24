@@ -1,4 +1,4 @@
-OASISFormat: 0.2
+OASISFormat: 0.3
 Name:        ocamlmod
 Version:     0.0.2
 Synopsis:    Generate OCaml modules from source files
@@ -12,3 +12,13 @@ Executable ocamlmod
   MainIs:       ocamlmod.ml
   BuildDepends: fileutils, pcre
   
+Executable test 
+  Path:         test
+  BuildTools:   ocamlbuild
+  MainIs:       test.ml
+  BuildDepends: oUnit (>= 1.1.1)
+  Install:      false
+  Build$:       flag(tests)
+
+Test main
+  Command: $test --ocamlmod $ocamlmod
