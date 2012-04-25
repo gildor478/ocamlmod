@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 21576d77346df1ad11d227def73be9bf) *)
+(* DO NOT EDIT (digest: 66fd59c1aded814e07eb8a15fba264ff) *)
 This is the INSTALL file for the ocamlmod distribution.
 
 This package uses OASIS to generate its build system. See section OASIS for
@@ -11,7 +11,6 @@ Dependencies
 In order to compile this package, you will need:
 * ocaml
 * findlib
-* fileutils for executable ocamlmod
 * pcre for executable ocamlmod
 * oUnit (>= 1.1.1) for executable test
 

@@ -27,18 +27,18 @@ let dump_ml chn_out fn =
   (* filename that should be used to point to source file *)
   let real_fn =
     let pwd = 
-      FileUtil.pwd () 
+      Sys.getcwd () 
     in
     let pwd =
       (* Translate file from build directory to source
        * directory
        *)
-      if FilePath.basename pwd = "_build" then
-        FilePath.dirname pwd
+      if Filename.basename pwd = "_build" then
+        Filename.dirname pwd
       else
         pwd
     in
-      FileUtil.readlink (FilePath.make_absolute pwd fn)
+      Filename.concat pwd fn
   in
 
   let () = 

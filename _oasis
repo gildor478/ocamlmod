@@ -10,7 +10,7 @@ Executable ocamlmod
   Path:         src
   BuildTools:   ocamlbuild
   MainIs:       ocamlmod.ml
-  BuildDepends: fileutils, pcre
+  BuildDepends: pcre
   
 Executable test 
   Path:         test
