@@ -20,7 +20,7 @@
 ################################################################################
 
 # OASIS_START
-# DO NOT EDIT (digest: 8771462114b96cb9d43b32938e1cc039)
+# DO NOT EDIT (digest: f5faa00855afaa57afc4bfb3002846d9)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -41,5 +41,7 @@
 <src/*.ml{,i}>: pkg_pcre
 # Executable test
 "test/test.byte": pkg_oUnit
+"test/test.byte": pkg_str
 <test/*.ml{,i}>: pkg_oUnit
+<test/*.ml{,i}>: pkg_str
 # OASIS_STOP

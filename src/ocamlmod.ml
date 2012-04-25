@@ -156,13 +156,14 @@ let process chn_in curdir chn_out =
   with End_of_file ->
     ()
 
-let process_modfile fn =
-  let chn_out =
-    open_out ((Filename.chop_extension fn)^".ml")
+let process_modfile ?out_fn fn =
+  let out_fn =
+    match out_fn with 
+      | None -> (Filename.chop_extension fn)^".ml"
+      | Some fn -> fn
   in
-  let chn_in =
-    open_in fn
-  in
+  let chn_out = open_out out_fn in
+  let chn_in = open_in fn in
     process chn_in (Filename.dirname fn) chn_out;
     close_in chn_in;
     close_out chn_out
@@ -171,11 +172,23 @@ let () =
   let lst =
     ref []
   in
+  let output =
+    ref None
+  in
     Arg.parse
-      []
+      ["-o",
+       Arg.String (fun str -> output := Some str),
+       "fn Output file."
+      ]
       (fun fn -> lst := fn :: !lst)
       "OCaml module generator written by Sylvain Le Gall";
 
-    List.iter
-      process_modfile 
-      (List.rev !lst)
+    match !output, !lst with 
+      | _, [] ->
+          failwith "Need at least one .mod file."
+      | Some out_fn, [in_fn] ->
+          process_modfile ~out_fn in_fn
+      | Some _, lst ->
+          failwith "Cannot use -o with multiple .mod files."
+      | None, lst ->
+          List.iter process_modfile (List.rev lst)

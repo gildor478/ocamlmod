@@ -16,7 +16,7 @@ Executable test
   Path:         test
   BuildTools:   ocamlbuild
   MainIs:       test.ml
-  BuildDepends: oUnit (>= 1.1.1)
+  BuildDepends: oUnit (>= 1.1.1), str
   Install:      false
   Build$:       flag(tests)
 
