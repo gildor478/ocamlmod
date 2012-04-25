@@ -20,7 +20,7 @@
 ################################################################################
 
 # OASIS_START
-# DO NOT EDIT (digest: 253e88fba5b335e2d4c12e10d76140e0)
+# DO NOT EDIT (digest: dc4c1a0c897694a4b510d7452f7b7e41)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -35,8 +35,8 @@
 "_darcs": -traverse
 "_darcs": not_hygienic
 # Executable ocamlmod
-"src/ocamlmod.byte": pkg_pcre
-<src/*.ml{,i}>: pkg_pcre
+"src/ocamlmod.byte": pkg_str
+<src/*.ml{,i}>: pkg_str
 # Executable test
 "test/test.byte": pkg_oUnit
 "test/test.byte": pkg_str
