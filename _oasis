@@ -11,8 +11,8 @@ Executable ocamlmod
   BuildTools:   ocamlbuild
   MainIs:       ocamlmod.ml
   BuildDepends: str
-  
-Executable test 
+
+Executable test
   Path:         test
   BuildTools:   ocamlbuild
   MainIs:       test.ml

@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 5ccca3d3e9f6b81869310a4314392d5d) *)
+(* DO NOT EDIT (digest: 1ac77e505f54af8ee5c70c6a589193cd) *)
 module OASISGettext = struct
 # 21 "/home/gildor/programmation/oasis/src/oasis/OASISGettext.ml"
 
@@ -234,19 +234,21 @@ module MyOCamlbuildFindlib = struct
     Ocamlbuild_pack.Lexers.blank_sep_strings
 
   let split s ch =
-    let x = 
-      ref [] 
+    let buf = Buffer.create 13 in
+    let x = ref [] in
+    let flush () = 
+      x := (Buffer.contents buf) :: !x;
+      Buffer.clear buf
     in
-    let rec go s =
-      let pos = 
-        String.index s ch 
-      in
-        x := (String.before s pos)::!x;
-        go (String.after s (pos + 1))
-    in
-      try
-        go s
-      with Not_found -> !x
+      String.iter 
+        (fun c ->
+           if c = ch then 
+             flush ()
+           else
+             Buffer.add_char buf c)
+        s;
+      flush ();
+      List.rev !x
 
   let split_nl s = split s '\n'
 
@@ -395,78 +397,6 @@ module MyOCamlbuildBase = struct
                   Options.ext_dll, "ext_dll";
                 ]
 
-        | Before_rules ->
-          (* TODO: move this into its own file and conditionnaly include it, if
-           * needed.
-           *)
-          (* OCaml cmxs rules: cmxs available in ocamlopt but not ocamlbuild.
-             Copied from ocaml_specific.ml in ocamlbuild sources. *)
-          let has_native_dynlink =
-            try
-              bool_of_string (BaseEnvLight.var_get "native_dynlink" env)
-            with Not_found ->
-              false
-          in
-          if has_native_dynlink && String.sub Sys.ocaml_version 0 4 = "3.11" then
-            begin
-              let ext_lib = !Options.ext_lib in
-              let ext_obj = !Options.ext_obj in
-              let ext_dll = !Options.ext_dll in
-              let x_o = "%"-.-ext_obj in
-              let x_a = "%"-.-ext_lib in
-              let x_dll = "%"-.-ext_dll in
-              let x_p_o = "%.p"-.-ext_obj in
-              let x_p_a = "%.p"-.-ext_lib in
-              let x_p_dll = "%.p"-.-ext_dll in
-
-              rule "ocaml: mldylib & p.cmx* & p.o* -> p.cmxs & p.so"
-                   ~tags:["ocaml"; "native"; "profile"; "shared"; "library"]
-                   ~prods:["%.p.cmxs"; x_p_dll]
-                   ~dep:"%.mldylib"
-                   (OC.native_profile_shared_library_link_mldylib
-                      "%.mldylib" "%.p.cmxs");
-
-              rule "ocaml: mldylib & cmx* & o* -> cmxs & so"
-                   ~tags:["ocaml"; "native"; "shared"; "library"]
-                   ~prods:["%.cmxs"; x_dll]
-                   ~dep:"%.mldylib"
-                   (OC.native_shared_library_link_mldylib
-                      "%.mldylib" "%.cmxs");
-
-              rule "ocaml: p.cmx & p.o -> p.cmxs & p.so"
-                   ~tags:["ocaml"; "native"; "profile"; "shared"; "library"]
-                   ~prods:["%.p.cmxs"; x_p_dll]
-                   ~deps:["%.p.cmx"; x_p_o]
-                   (OC.native_shared_library_link ~tags:["profile"]
-                                                  "%.p.cmx" "%.p.cmxs");
-
-              rule "ocaml: p.cmxa & p.a -> p.cmxs & p.so"
-                   ~tags:["ocaml"; "native"; "profile"; "shared"; "library"]
-                   ~prods:["%.p.cmxs"; x_p_dll]
-                   ~deps:["%.p.cmxa"; x_p_a]
-                   (OC.native_shared_library_link ~tags:["profile"; "linkall"]
-                                                  "%.p.cmxa" "%.p.cmxs");
-
-              rule "ocaml: cmx & o -> cmxs"
-                   ~tags:["ocaml"; "native"; "shared"; "library"]
-                   ~prods:["%.cmxs"]
-                   ~deps:["%.cmx"; x_o]
-                   (OC.native_shared_library_link "%.cmx" "%.cmxs");
-
-              rule "ocaml: cmx & o -> cmxs & so"
-                   ~tags:["ocaml"; "native"; "shared"; "library"]
-                   ~prods:["%.cmxs"; x_dll]
-                   ~deps:["%.cmx"; x_o]
-                   (OC.native_shared_library_link "%.cmx" "%.cmxs");
-
-              rule "ocaml: cmxa & a -> cmxs & so"
-                   ~tags:["ocaml"; "native"; "shared"; "library"]
-                   ~prods:["%.cmxs"; x_dll]
-                   ~deps:["%.cmxa"; x_a]
-                   (OC.native_shared_library_link ~tags:["linkall"]
-                                                  "%.cmxa" "%.cmxs");
-            end
-
         | After_rules -> 
             (* Declare OCaml libraries *)
             List.iter 
@@ -507,7 +437,7 @@ module MyOCamlbuildBase = struct
                    (* When ocaml link something that use the C library, then one
                       need that file to be up to date.
                     *)
-                   dep  ["link"; "ocaml"; "program"; tag_libstubs lib]
+                   dep ["link"; "ocaml"; "program"; tag_libstubs lib]
                      [dir/"lib"^(nm_libstubs lib)^"."^(!Options.ext_lib)];
 
                    dep  ["compile"; "ocaml"; "program"; tag_libstubs lib]
@@ -545,7 +475,7 @@ module MyOCamlbuildBase = struct
 end
 
 
-# 548 "myocamlbuild.ml"
+# 478 "myocamlbuild.ml"
 open Ocamlbuild_plugin;;
 let package_default =
   {MyOCamlbuildBase.lib_ocaml = []; lib_c = []; flags = []; includes = []; }
@@ -553,6 +483,6 @@ let package_default =
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default package_default;;
 
-# 557 "myocamlbuild.ml"
+# 487 "myocamlbuild.ml"
 (* OASIS_STOP *)
 Ocamlbuild_plugin.dispatch dispatch_default;;
