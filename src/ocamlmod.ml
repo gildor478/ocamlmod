@@ -103,7 +103,7 @@ let dump_ml chn_out fn =
         skip_export (input_line ())
 
     and start_export line =
-      Printf.fprintf chn_out "# %d %S\n" !line_num real_fn;
+      Printf.fprintf chn_out "# %d %S\n" !line_num fn;
       parse_body line
 
     and parse_body line =
