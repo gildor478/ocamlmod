@@ -26,8 +26,8 @@
 let dump_ml chn_out fn =
   (* filename that should be used to point to source file *)
   let real_fn =
-    let pwd = 
-      Sys.getcwd () 
+    let pwd =
+      Sys.getcwd ()
     in
     let pwd =
       (* Translate file from build directory to source
@@ -41,27 +41,27 @@ let dump_ml chn_out fn =
       Filename.concat pwd fn
   in
 
-  let () = 
+  let () =
     (* Warn if not a .ml file *)
     if not (Filename.check_suffix fn ".ml") then
       prerr_endline ("'"^fn^"' doesn't end with .ml")
   in
 
   let modname =
-    String.capitalize 
+    String.capitalize
       (Filename.basename
          (Filename.chop_suffix fn ".ml"))
   in
 
-  let export_extract chn_out fn = 
-    let is_rgxp s_rgxp = 
-      let rgxp = 
-        Str.regexp s_rgxp 
+  let export_extract chn_out fn =
+    let is_rgxp s_rgxp =
+      let rgxp =
+        Str.regexp s_rgxp
       in
-        fun s -> 
+        fun s ->
           Str.string_match rgxp s 0
     in
-    let with_odn = 
+    let with_odn =
       Str.regexp "with +odn\\($\\| \\)"
     in
     let type_conv_path =
@@ -70,25 +70,25 @@ let dump_ml chn_out fn =
     let is_export_end =
       is_rgxp "(\\* +END +EXPORT +\\*)"
     in
-    let is_export_start = 
+    let is_export_start =
       is_rgxp "(\\* +START +EXPORT +\\*)"
     in
-    let is_beg_comment = 
-      is_rgxp "(\\*.*" 
+    let is_beg_comment =
+      is_rgxp "(\\*.*"
     in
 
-    let line_num = 
+    let line_num =
       ref 0
     in
     let chn_in =
-      open_in fn 
+      open_in fn
     in
     let input_line () =
       incr line_num;
       input_line chn_in
     in
 
-    let rec skip_header line = 
+    let rec skip_header line =
       if is_export_start line then
         start_export (input_line ())
       else if is_beg_comment line then
@@ -96,7 +96,7 @@ let dump_ml chn_out fn =
       else
         start_export line
 
-    and skip_export line = 
+    and skip_export line =
       if is_export_start line then
         start_export (input_line ())
       else
@@ -111,7 +111,7 @@ let dump_ml chn_out fn =
           skip_export (input_line ())
         else
           begin
-            let line = 
+            let line =
               (* Remove ODN elements *)
               List.fold_left
                 (fun str rgxp -> Str.global_replace rgxp "" str)
@@ -119,7 +119,7 @@ let dump_ml chn_out fn =
                 [with_odn; type_conv_path]
             in
               if line = "" then
-                Printf.fprintf chn_out "\n" 
+                Printf.fprintf chn_out "\n"
               else
                 Printf.fprintf chn_out "  %s\n" line;
               parse_body (input_line ())
@@ -140,7 +140,7 @@ let dump_ml chn_out fn =
 
 let process chn_in curdir chn_out =
   try
-    while true do 
+    while true do
       let fn =
         input_line chn_in
       in
@@ -159,7 +159,7 @@ let process chn_in curdir chn_out =
 
 let process_modfile ?out_fn fn =
   let out_fn =
-    match out_fn with 
+    match out_fn with
       | None -> (Filename.chop_extension fn)^".ml"
       | Some fn -> fn
   in
@@ -169,7 +169,7 @@ let process_modfile ?out_fn fn =
     close_in chn_in;
     close_out chn_out
 
-let () = 
+let () =
   let lst =
     ref []
   in
@@ -184,7 +184,7 @@ let () =
       (fun fn -> lst := fn :: !lst)
       "OCaml module generator written by Sylvain Le Gall";
 
-    match !output, !lst with 
+    match !output, !lst with
       | _, [] ->
           failwith "Need at least one .mod file."
       | Some out_fn, [in_fn] ->
