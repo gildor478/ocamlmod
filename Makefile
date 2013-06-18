@@ -68,3 +68,9 @@ headache:
 		| xargs headache -h _header -c _headache.config
 
 .PHONY: headache
+
+deploy:
+	admin-gallu-deploy --verbose \
+		--forge_upload --forge_group ocamlmod --forge_user gildor-admin
+
+.PHONY: deploy

@@ -1,20 +1,19 @@
 OASISFormat: 0.3
 Name:        ocamlmod
-Version:     0.0.3
+Version:     0.0.4
 Synopsis:    Generate OCaml modules from source files
 Authors:     Sylvain Le Gall
 License:     LGPL-2.1 with OCaml linking exception
 Plugins:     DevFiles (0.2), META (0.2), StdFiles (0.2)
+BuildTools:  ocamlbuild
 
 Executable ocamlmod
   Path:         src
-  BuildTools:   ocamlbuild
   MainIs:       ocamlmod.ml
   BuildDepends: str
 
 Executable test
   Path:         test
-  BuildTools:   ocamlbuild
   MainIs:       test.ml
   BuildDepends: oUnit (>= 1.1.1), str
   Install:      false
