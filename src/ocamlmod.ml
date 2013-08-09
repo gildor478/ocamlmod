@@ -62,7 +62,7 @@ let dump_ml chn_out fn =
           Str.string_match rgxp s 0
     in
     let with_odn =
-      Str.regexp "with +odn\\($\\| \\)"
+      Str.regexp " +with +odn\\($\\| \\)"
     in
     let type_conv_path =
       Str.regexp "TYPE_CONV_PATH +\"[^\"]*\""
