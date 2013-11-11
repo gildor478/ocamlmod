@@ -1,4 +1,4 @@
-ocamlmod: generate OCaml modules from source files
+ocamlmod: Generate OCaml modules from source files
 
 Copyright (C) 2011, OCamlCore SARL
 
