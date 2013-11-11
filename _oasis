@@ -15,9 +15,9 @@ Executable ocamlmod
 Executable test
   Path:         test
   MainIs:       test.ml
-  BuildDepends: oUnit (>= 1.1.1), str
+  BuildDepends: oUnit (>= 2.0.0), str
   Install:      false
   Build$:       flag(tests)
 
 Test main
-  Command: $test --ocamlmod $ocamlmod
+  Command: $test

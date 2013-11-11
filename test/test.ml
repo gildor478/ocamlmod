@@ -1,21 +1,18 @@
-open OUnit
+open OUnit2
 
-let ocamlmod = 
-  ref "false"
+let ocamlmod = Conf.make_exec "ocamlmod"
 
-let _lst : test_result list = 
+let () = 
   run_test_tt_main
-    ~arg_specs:
-    ["--ocamlmod",
-     Arg.Set_string ocamlmod,
-     "fn ocamlmod executable."]
     ("ocamlmod">::
-     bracket_tmpfile
-     (fun (fn, chn) ->
+     (fun test_ctxt ->
+        let fn, chn = bracket_tmpfile test_ctxt in
         let () = close_out chn in
         let () = 
-          assert_command 
-            !ocamlmod ["test/data/test01.mod"; "-o"; fn]
+          assert_command ~ctxt:test_ctxt 
+            (ocamlmod test_ctxt)
+            [(in_testdata_dir test_ctxt ["test01.mod"]);
+             "-o"; fn]
         in
         let lst = 
           let lst = ref [] in
@@ -33,9 +30,17 @@ let _lst : test_result list =
         let find_reg reg = 
           let reg = Str.regexp reg in
             List.exists
-              (fun str -> Str.string_match reg str 0)
+              (fun str -> 
+                 if Str.string_match reg str 0 then begin
+                   logf test_ctxt `Info "%S" str;
+                   true
+                 end else begin
+                   false
+                 end)
               lst
         in
+        List.iter
+          (fun line -> logf test_ctxt `Info "%S" line) lst;
 
           ignore "(*";
           assert_bool 
@@ -48,4 +53,7 @@ let _lst : test_result list =
           assert_bool
             "Doesn't contain with odn"
             (not (find_reg ".*with *odn"));
+          assert_bool
+            "No blank at end of line."
+            (not (find_reg ".*  *$"));
           ()))

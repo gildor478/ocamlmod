@@ -1,5 +1,5 @@
 
-type t = 
+type t =
     {
       arecord: int
     } with odn
