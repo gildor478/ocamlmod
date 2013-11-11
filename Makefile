@@ -1,7 +1,8 @@
 ################################################################################
-#  ocamlmod: generate OCaml modules from source files                          #
+#  ocamlmod: Generate OCaml modules from source files                          #
 #                                                                              #
 #  Copyright (C) 2011, OCamlCore SARL                                          #
+#  Copyright (C) 2013, Sylvain Le Gall                                         #
 #                                                                              #
 #  This library is free software; you can redistribute it and/or modify it     #
 #  under the terms of the GNU Lesser General Public License as published by    #
