@@ -24,35 +24,35 @@ open OUnit2
 
 let ocamlmod = Conf.make_exec "ocamlmod"
 
-let () = 
+let () =
   run_test_tt_main
     ("ocamlmod">::
      (fun test_ctxt ->
         let fn, chn = bracket_tmpfile test_ctxt in
         let () = close_out chn in
-        let () = 
-          assert_command ~ctxt:test_ctxt 
+        let () =
+          assert_command ~ctxt:test_ctxt
             (ocamlmod test_ctxt)
             [(in_testdata_dir test_ctxt ["test01.mod"]);
              "-o"; fn]
         in
-        let lst = 
+        let lst =
           let lst = ref [] in
           let chn = open_in fn in
-          let () = 
+          let () =
             try
-              while true do 
-                lst := (input_line chn) :: !lst 
+              while true do
+                lst := (input_line chn) :: !lst
               done
             with End_of_file ->
               close_in chn
           in
             List.rev !lst
         in
-        let find_reg reg = 
+        let find_reg reg =
           let reg = Str.regexp reg in
             List.exists
-              (fun str -> 
+              (fun str ->
                  if Str.string_match reg str 0 then begin
                    logf test_ctxt `Info "%S" str;
                    true
@@ -65,7 +65,7 @@ let () =
           (fun line -> logf test_ctxt `Info "%S" line) lst;
 
           ignore "(*";
-          assert_bool 
+          assert_bool
             "Contains SHOULD BE THERE"
             (find_reg " *(\\* SHOULD BE THERE \\*)");
           ignore "(*";

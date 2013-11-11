@@ -34,8 +34,8 @@ rule "ocamlmod: %.mod -> %.ml"
       let dirname =
         Pathname.dirname modfn
       in
-        depends_from_file 
-          env 
+        depends_from_file
+          env
           build
           ~fmod:(fun fn -> dirname/fn)
           modfn;
