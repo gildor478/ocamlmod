@@ -61,16 +61,3 @@ setup.data:
 .PHONY: build doc test all install uninstall reinstall clean distclean configure
 
 # OASIS_STOP
-
-headache:
-	find ./ -name _darcs -prune -false -o -name _build -prune \
-	  -false -o -type f \
-		| xargs headache -h _header -c _headache.config
-
-.PHONY: headache
-
-deploy:
-	admin-gallu-deploy --verbose \
-		--forge_upload --forge_group ocamlmod --forge_user gildor-admin
-
-.PHONY: deploy
