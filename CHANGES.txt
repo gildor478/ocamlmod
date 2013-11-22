@@ -1,3 +1,8 @@
+2013-11-22  Sylvain Le Gall <sylvain AT le-gall.net>
+
+    * Version 0.0.6
+    * Reupload because of mismatch in GODI
+
 2013-11-11  Sylvain Le Gall <sylvain AT le-gall.net>
 
     * Version 0.0.5
