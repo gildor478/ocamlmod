@@ -180,7 +180,11 @@ let () =
     Arg.parse
       ["-o",
        Arg.String (fun str -> output := Some str),
-       "fn Output file."
+       "fn Output file.";
+
+       "-version",
+       Arg.Unit (fun () -> print_endline OcamlmodConf.version; exit 0),
+       " Print version and exit.";
       ]
       (fun fn -> lst := fn :: !lst)
       "OCaml module generator written by Sylvain Le Gall";

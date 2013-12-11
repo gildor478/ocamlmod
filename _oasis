@@ -5,6 +5,7 @@ Synopsis:    Generate OCaml modules from source files
 Authors:     Sylvain Le Gall
 License:     LGPL-2.1 with OCaml linking exception
 Plugins:     DevFiles (0.2), META (0.2), StdFiles (0.2)
+FilesAB:     src/ocamlmodConf.ml.ab
 BuildTools:  ocamlbuild
 
 Executable ocamlmod
