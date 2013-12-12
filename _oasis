@@ -1,6 +1,6 @@
 OASISFormat: 0.3
 Name:        ocamlmod
-Version: 0.0.7
+Version: 0.0.8
 Synopsis:    Generate OCaml modules from source files
 Authors:     Sylvain Le Gall
 License:     LGPL-2.1 with OCaml linking exception
