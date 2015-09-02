@@ -1,3 +1,8 @@
+2015-09-02  Sylvain Le Gall <sylvain AT le-gall.net>
+
+    * Version 0.0.8
+    * Include file test/data/test01.mod (Close: #1238)
+
 2013-12-13  Sylvain Le Gall <sylvain AT le-gall.net>
 
     * Version 0.0.7
