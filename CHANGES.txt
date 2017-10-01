@@ -1,3 +1,9 @@
+2017-10-01  Sylvain Le Gall <sylvain AT le-gall.net>
+
+    * Version 0.0.9
+    * Update setup.ml to use latest OASIS 0.4.10, compatible with safe-string
+      (Closes: #1759)
+
 2015-09-02  Sylvain Le Gall <sylvain AT le-gall.net>
 
     * Version 0.0.8
