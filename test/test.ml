@@ -26,56 +26,43 @@ let ocamlmod = Conf.make_exec "ocamlmod"
 
 let () =
   run_test_tt_main
-    ("ocamlmod">::
-     (fun test_ctxt ->
-        let fn, chn = bracket_tmpfile test_ctxt in
-        let () = close_out chn in
+    ( "ocamlmod" >:: fun test_ctxt ->
+      let fn, chn = bracket_tmpfile test_ctxt in
+      let () = close_out chn in
+      let () =
+        assert_command ~ctxt:test_ctxt (ocamlmod test_ctxt)
+          [ in_testdata_dir test_ctxt [ "test01.mod" ]; "-o"; fn ]
+      in
+      let lst =
+        let lst = ref [] in
+        let chn = open_in fn in
         let () =
-          assert_command ~ctxt:test_ctxt
-            (ocamlmod test_ctxt)
-            [(in_testdata_dir test_ctxt ["test01.mod"]);
-             "-o"; fn]
+          try
+            while true do
+              lst := input_line chn :: !lst
+            done
+          with End_of_file -> close_in chn
         in
-        let lst =
-          let lst = ref [] in
-          let chn = open_in fn in
-          let () =
-            try
-              while true do
-                lst := (input_line chn) :: !lst
-              done
-            with End_of_file ->
-              close_in chn
-          in
-            List.rev !lst
-        in
-        let find_reg reg =
-          let reg = Str.regexp reg in
-            List.exists
-              (fun str ->
-                 if Str.string_match reg str 0 then begin
-                   logf test_ctxt `Info "%S" str;
-                   true
-                 end else begin
-                   false
-                 end)
-              lst
-        in
-        List.iter
-          (fun line -> logf test_ctxt `Info "%S" line) lst;
+        List.rev !lst
+      in
+      let find_reg reg =
+        let reg = Str.regexp reg in
+        List.exists
+          (fun str ->
+            if Str.string_match reg str 0 then (
+              logf test_ctxt `Info "%S" str;
+              true)
+            else false)
+          lst
+      in
+      List.iter (fun line -> logf test_ctxt `Info "%S" line) lst;
 
-          ignore "(*";
-          assert_bool
-            "Contains SHOULD BE THERE"
-            (find_reg " *(\\* SHOULD BE THERE \\*)");
-          ignore "(*";
-          assert_bool
-            "Doesn't contain SHOULD NOT BE THERE"
-            (not (find_reg " *(\\* SHOULD NOT BE THERE \\*)"));
-          assert_bool
-            "Doesn't contain with odn"
-            (not (find_reg ".*with *odn"));
-          assert_bool
-            "No blank at end of line."
-            (not (find_reg ".*  *$"));
-          ()))
+      ignore "(*";
+      assert_bool "Contains SHOULD BE THERE"
+        (find_reg " *(\\* SHOULD BE THERE \\*)");
+      ignore "(*";
+      assert_bool "Doesn't contain SHOULD NOT BE THERE"
+        (not (find_reg " *(\\* SHOULD NOT BE THERE \\*)"));
+      assert_bool "Doesn't contain with odn" (not (find_reg ".*with *odn"));
+      assert_bool "No blank at end of line." (not (find_reg ".*  *$"));
+      () )
