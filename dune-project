@@ -16,6 +16,5 @@
  (synopsis "Generate OCaml modules from source files")
  (depends
    (ocaml (>= 4.14.1))
-   str
    (ounit2 (and (>= 2.0.0) :with-test))))
 

@@ -9,7 +9,6 @@ bug-reports: "https://github.com/gildor478/ocamlmod/issues"
 depends: [
   "dune" {>= "3.17"}
   "ocaml" {>= "4.14.1"}
-  "str"
   "ounit2" {>= "2.0.0" & with-test}
   "odoc" {with-doc}
 ]
