@@ -1,3 +1,8 @@
+## v0.1.1 - 2025-08-04
+
+### Fixed
+- Add a test dependencies to the `ocamlmod` binary.
+
 ## v0.1.0 - 2025-02-23
 
 ### Fixed

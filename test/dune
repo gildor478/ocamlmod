@@ -1,5 +1,6 @@
 (test
  (name test)
  (deps
+  %{bin:ocamlmod}
   (glob_files data/*))
  (libraries ounit2 str))
